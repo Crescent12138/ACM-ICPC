@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-//高精度算法加减乘除
-#include<bits/stdc++.h>
-using namespace std;
-=======
->>>>>>> 278fb314a3da4713da79a94cc121bd19c9560df9
+
 vector<int> mul(vector<int> a, int x){
     vector<int> res;
     int t = 0;
@@ -51,16 +46,16 @@ vector<int> vmul(vector<int> a, vector<int> b){
 vector<int> div(vector<int> &a,int b,int &r)//除法 &r用来返回
 {
     r=0;
-    vector<int> c;//c商
+    vector<int> c;
     for(int i=a.size();i>=0;i--)
     {
-        r=r*10+a[i];//当前被除数=上一个余数*10+当前b[i]
-        c.push_back(r/b);//当前位的商
+        r=r*10+a[i];
+        c.push_back(r/b);//当前位的
         r%=b;//余数
     }
     
-    reverse(c.begin(),c.end());//因为方式是a[n-1]a[n-2]...a[0]放入，弹出时是从a[n-1]到a[0]头插到c，
-    //因此与实际商顺序相反，所以翻转数组
+    reverse(c.begin(),c.end());
+    //因此与实际商顺序相反，所以翻转数
     
     while(c.size()>1&&c.back()==0)c.pop_back();//清除可能存在的前导零
     

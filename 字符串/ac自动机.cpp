@@ -32,7 +32,7 @@ void build() {
 int query(char *t) {
   int u = 0, res = 0;
   for (int i = 1; t[i]; i++) {
-    u = tr[u][t[i] - 'a'];  // 转移
+    u = tr[u][t[i] - 'a'];  
     for (int j = u; j && e[j] != -1; j = fail[j]) {
       res += e[j], e[j] = -1;
     }
@@ -42,7 +42,6 @@ int query(char *t) {
 }  // namespace AC
 
 char s[N];
-<<<<<<< HEAD
 vector<int >ve[100000];
 int main() {
   scanf("%d", &n);
@@ -52,7 +51,7 @@ int main() {
   int num = 0;
   string ss;
   while (cin >> num) {
-    getline(cin,ss)；
+    getline(cin,ss)�?
         for (auto t : ss) {
 
 
@@ -62,13 +61,3 @@ int main() {
 
      
   }
-=======
-int main() {
-  scanf("%d", &n);
-  for (int i = 1; i <= n; i++) scanf("%s", s + 1), AC::insert(s);
-  scanf("%s", s + 1);
-  AC::build();
-  printf("%d", AC::query(s));
->>>>>>> 278fb314a3da4713da79a94cc121bd19c9560df9
-  return 0;
-}

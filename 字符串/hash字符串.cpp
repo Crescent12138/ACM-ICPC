@@ -29,11 +29,7 @@ ull gethash2(int l,int r){
 }
 vector<int >ve;
 int main(){
-<<<<<<< HEAD
     cin>>s; 
-=======
-    cin>>s;
->>>>>>> 278fb314a3da4713da79a94cc121bd19c9560df9
     len=s.length();
     for(int i=0;i<len;i++){
         hash1[i+1]=(hash1[i]*2333+s[i]-'a'+1)%mod;
@@ -49,10 +45,6 @@ int main(){
         for(int j=i,k=1;j<=len;j+=i,k+=i){
             ull ss=gethash1(k,j);
             ull se=gethash2(k,j);
-            //for(int q=k-1;q<j;q++)cout<<s[q];
-            // cout<<"\n";
-            // cout<<ss<<" "<<se<<"\n";
-            // cout<<"-----------------";
             if(!st.count(ss)&&!st.count(se)){
                 st.insert(ss);
                 st.insert(se);

@@ -1,0 +1,12 @@
+{
+    "skin": {
+        "name": "skin_boy",
+        "backColor": 16435230,
+        "textColor": 16777215,
+        "captionColor": 13148184,
+        "captionTextColor": 16777215,
+        "borderColor": 13148184,
+        "windowColor": 16435230,
+        "scrollColor": 16435230
+    }
+}
