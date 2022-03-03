@@ -1,106 +1,58 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-typedef long long ll;
-const int maxn = 105;
-ll x[maxn], ans;
-queue<ll> aria;
-ll min(ll a, ll b)
-{
-	if (a < b)	return a;
-	else	return b;
+#include<map>
+#include<random>
+mt19937 rd((ll)(new int));
+typedef __int128_t lll;
+// const int test_int[]={2,7,61};
+const ll test[]={2,325,9375,28178,450775,9780504,1795265022};
+ll qpow(ll x,ll n,ll mod){
+	ll c=1;
+	for(x%=mod;n;n/=2,x=(lll)x*x%mod) 
+		if(n&1) c=(lll)c*x%mod;
+	return c;
 }
-ll multi(ll a, ll b, ll p)	//¿ìËÙ³Ë£¿ 
-{
-	ll ans = 0;
-	while (b) {
-		if (b & 1LL)	ans = (ans + a) % p;
-		a = (a + a) % p;
-		b >>= 1;
-	}
-	return ans;
-}
-ll qpow(ll a, ll b, ll p)
-{
-	ll ans = 1;
-	while (b) {
-		if (b & 1LL)	ans = multi(ans, a, p);
-		a = multi(a, a, p);
-		b >>= 1;
-	}
-	return ans;
-}
-
-bool MR(ll n)
-{
-	if (n == 2)	return true;
-	int s = 20, i, t = 0;
-	ll u = n - 1;
-	while (!(u & 1)) {
-		t++;
-		u >>= 1;
-	}
-	while (s--) {
-		ll a = rand() % (n - 2) + 2;
-		x[0] = qpow(a, u, n);
-		for (i = 1; i <= t; i++) {
-			x[i] = multi(x[i - 1], x[i - 1], n);
-			if (x[i] == 1 && x[i - 1] != 1 && x[i - 1] != n - 1)	return false;
+int miller_robin(ll n){
+	if (n<2||n%6%4!=1) return (n|1)==3;
+	ll q=__builtin_ctzll(n-1),m=(n-1)>>q;
+	for(ll a:test){
+		if(a>=n) break;
+		ll x=qpow(a,m,n),x1,i=q;
+		for(;i--&&x!=1;x=x1){
+			x1=(lll)x*x%n;
+			if(x1==1&&x!=1&&x!=n-1) return 0;
 		}
-		if (x[t] != 1)	return false;
+		if(x!=1) return 0;
 	}
-	return true;
+	return 1;
 }
-
-ll gcd(ll a, ll b)
-{
-	if (b == 0)	return a;
-	else	return gcd(b, a % b);
-}
-
-ll Pollard_Rho(ll n, int c)
-{
-	ll i = 1, k = 2, x = rand() % (n - 1) + 1, y = x;
-	while (1) {
-		i++;
-		x = (multi(x, x, n) + c) % n;
-		ll p = gcd((y - x + n) % n, n);
-		if (p != 1 && p != n)	return p;
-		if (y == x)	return n;
-		if (i == k) {
-			y = x;
-			k <<= 1;
+map<ll,ll> ans;
+ll pollard_rho(ll x){
+	ll s=0,t=0,c=rd()%(x-1)+1,d=1;
+	for(ll val,step,g=1;d==1;g<<=1,s=t){
+		val=1;
+		for(step=1;d==1&&step<=g;step++){
+			t=((lll)t*t+c)%x;
+			val=(lll)val*abs(t-s)%x;
+			if(step%100==0) d=__gcd(val,x);
 		}
+		d=__gcd(val,x);
 	}
+	return d;
 }
-
-void find(ll n, int c)
-{
-	if (n == 1)	return;
-	if (MR(n)) {
-		aria.push(n);
-		return;
+void fac(ll n){
+	if(n<2) return;
+	if(miller_robin(n)){
+		ans[n]++;return;
 	}
-	ll p = n, k = c;
-	while (p >= n) {
-		p = Pollard_Rho(p, c--);
-	}
-	find(p, k);
-	find(n / p, k);
+	ll p=n;
+	while(p>=n) p=pollard_rho(n);
+	fac(n/p),fac(p);
 }
-
-int main()
-{
+void solve(){
 	ll n;
-	while (~scanf("%lld", &n)) {
-		find(n, 107);
-		cout << aria.front();
-		aria.pop();
-		while (!aria.empty()) {
-			cout << "*" << aria.front();
-			aria.pop();
-		}
-		cout << endl;
-	}
-	return 0;
+	scanf("%lld",&n);
+	if(miller_robin(n)) return void(puts("Prime"));
+	ans.clear();
+	fac(n);
+	printf("%lld\n",ans.rbegin()->first);
+	// for(auto [l,r]:ans) printf("%lld %lld\n",l,r);
 }
